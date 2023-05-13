@@ -1,38 +1,30 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# podaj nazwy plików widmowych (.Spe): "Skrót pierwiastka"_"liczba atomowa".Spe np V_23.Spe lub V_23_ssdffc-xsnjdn.Spe (wyrażenia po pierwszych 5 znakach nie mają znaczenia)
+# podaj nazwy plikow widmowych (.Spe) po przecinku: "Skot pierwiastka"_"liczba atomowa".Spe np V__23.Spe lub V_23_ssdffc-xsnjdn.Spe (wyrazenia po pierwszych 5 znakach nie maja znaczenia)
 file_names = [
-    "Ti_22_cw_1.Spe",
-    "V_23_cw_1.Spe",
-    "Fe_26_cw_1.Spe",
-    "Co_27_cw_1.Spe",
-    "Ni_28_cw_1.Spe",
-    "Cu_29_cw_1.Spe",
-    "Zn_30_cw_1.Spe",
-    "Zr_40_cw_1.Spe",
-    "Nb_41_cw_1.Spe",
-    "Mo_42_cw_1.Spe",
+    # przykladowa nazwa pliku
+    "V__23_cw_1.Spe"
 ]
 
 for file_name in file_names:
-    # tabela z wartościami
+    # tabela z wartosciami
     data = []
-    # tabela z obszarami pików
+    # tabela z obszarami pikow
     rois = []
 
     with open(file_name, "r") as file:
-        # poniżesze markery odpowiadają za zaznaczenie pików
+        # ponizsze markery odpowiadaja za zaznaczenie pikow
         start_marker = False
         end_marker = False
         for line in file:
-            # zakres kanałów w tym przypadku jest od 0 do 1023, nie musi tak być!!! Może być zakres np: 0 2047
-            # sprawdź w pliku jak jest zapisane, linijka przed wartościami powinna wyglądać w następujący sposób: 0 2^(n)-1
+            # zakres kanałów w tym przypadku jest od 0 do 1023, nie musi tak byc!!! Może być zakres np: 0 2047
+            # sprawdz w pliku jak jest zapisane, linijka przed wartosciami powinna wygladac w nastepujacy sposob: 0 2^(n)-1
             if line.startswith("0 1023"):
                 start_marker = True
                 continue
 
-            # szukanie w pliku zapisu o zakresach markerów
+            # szukanie w pliku zapisu o zakresach markerow
             if line.startswith("$ROI:"):
                 end_marker = True
                 break
@@ -59,7 +51,7 @@ for file_name in file_names:
         roi_start, roi_end = roi
         plt.axvspan(roi_start, roi_end, facecolor="gray", alpha=0.3)
 
-        # Zaznaczenie wartości w połowie zaznaczonych przedziałów
+        # Zaznaczenie wartosci w polowie zaznaczonych przedziałow
         mid_point = (roi_start + roi_end) // 2
         plt.axvline(x=mid_point, color="green", linestyle="--")
         plt.text(
@@ -74,7 +66,7 @@ for file_name in file_names:
             fwhm_end = indices_above_half_max[-1]
             fwhm_indices = np.arange(roi_start + fwhm_start, roi_start + fwhm_end + 1)
 
-            # Zaznaczenie wartości FWHM na wykresie
+            # Zaznaczenie wartosci FWHM na wykresie
             plt.text(
                 (roi_start + roi_end) / 2,
                 half_max,
@@ -84,5 +76,5 @@ for file_name in file_names:
             )
     # Zapis wykresu do pliku JPEG
     plt.savefig(f"{file_name[:5]}.png")
-    # wyświetlenie wykresu
+    # wyswietlenie wykresu
     plt.show()
