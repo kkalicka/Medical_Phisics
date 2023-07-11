@@ -1,0 +1,324 @@
+from tkinter import *
+import numpy as np
+
+calc = Tk()  # Tk is a GUI widget
+calc.title("Math&Physics Calculator")  # Windows title
+calc.resizable(
+    width=False, height=False
+)  # dozwolnone zmiany rozmiaru w czasie rzeczywistym
+
+calc.geometry("380x380+500+40")  # wymiary roota
+
+mainFrame = Frame(calc, bd=7, bg="gainsboro", relief=RIDGE)  # dodawanie okna
+mainFrame.grid()
+
+innerFrame = Frame(mainFrame, bd=5, bg="gainsboro", relief=RIDGE)
+innerFrame.grid()  # funkcja tworząca dwuwymiarową tablicę z widgetu
+
+
+class kalkulator:
+    def __init__(self):
+        self.total = 0
+        self.current = ""
+        self.firstnum = ""
+        self.secondnum = ""
+        self.input_value = True
+        self.check_sum = False
+        self.op = ""
+        self.results = False
+
+    def display(self, value):
+        txtDisplay.delete(0, END)
+        txtDisplay.insert(0, value)
+
+    def Clear(self):
+        self.result = False
+        self.current = "0"
+        self.input_value = True
+        self.display(0)
+
+    def All_Clear(self):
+        self.Clear()
+        self.total = 0
+        self.input_value = True
+
+    def Numberentry(self, num):
+        self.result = False
+        firstnum = txtDisplay.get()
+        secondnum = str(num)
+        if self.input_value:
+            self.current = secondnum
+            self.input_value = False
+        else:
+            if secondnum == ".":
+                if secondnum in firstnum:
+                    return
+            self.current = firstnum + secondnum
+        self.display(self.current)
+
+    def sum_of_total(self):
+        self.result = True
+        self.current = float(self.current)
+        if self.check_sum == True:
+            self.valid_function()
+        else:
+            self.total = float(txtDisplay.get())
+
+    def pi(self):
+        self.result = False
+        self.current = np.pi
+        self.display(self.current)
+
+    def mathPM(self):
+        self.result = False
+        self.current = -(float(txtDisplay.get()))
+        self.display(self.current)
+
+    def squared1(self):
+        self.result = False
+        self.current = np.sqrt(float(txtDisplay.get()))
+        self.display(self.current)
+
+    def squared2(self):
+        self.result = False
+        self.firstnum = float(txtDisplay.get())
+        self.secondnum = float(txtDisplay.get())
+        self.current = self.firstnum * self.secondnum
+        self.display(self.current)
+
+    def squared3(self):
+        self.result = False
+        self.firstnum = float(1)
+        self.secondnum = float(txtDisplay.get())
+        self.current = self.firstnum / self.secondnum
+        self.display(self.current)
+
+    def backspace(self):
+        numLen = len(txtDisplay.get())
+        txtDisplay.delete(numLen - 1, "end")
+        if numLen == 1:
+            txtDisplay.insert(0, "0")
+
+    def valid_function(self):
+        if self.op == "add":
+            self.total += self.current
+        if self.op == "sub":
+            self.total -= self.current
+        if self.op == "multi":
+            self.total *= self.current
+        if self.op == "divide":
+            self.total /= self.current
+        if self.op == "mod":
+            self.total %= self.current
+        self.input_value = True
+        self.check_sim = False
+        self.display(self.total)
+
+    def operation(self, op):
+        self.current = float(self.current)
+        if self.check_sum:
+            self.valid_function()
+        elif not self.result:
+            self.total = self.current
+            self.input_value = True
+        self.check_sum = True
+        self.op = op
+        self.result = False
+
+
+added_value = kalkulator()
+
+txtDisplay = Entry(
+    innerFrame, font=("arial", 10, "bold"), bd=5, width=48, justify=RIGHT
+)
+txtDisplay.grid(row=0, column=0, columnspan=4, pady=1)
+txtDisplay.insert(0, "0")
+
+numberpad = "789456123"
+i = 0
+btn = []
+for j in range(3, 6):
+    for k in range(3):
+        btn.append(
+            Button(
+                innerFrame,
+                width=8,
+                height=2,
+                font=("arial", 10, "bold"),
+                bd=7,
+                text=numberpad[i],
+            )
+        )
+        btn[i].grid(row=j, column=k, pady=1)
+        btn[i]["command"] = lambda x=numberpad[i]: added_value.Numberentry(x)
+        i += 1
+
+btnDel = Button(
+    innerFrame,
+    text="DEL",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.backspace,
+)
+btnDel.grid(row=1, column=0, pady=1)
+btnC = Button(
+    innerFrame,
+    text="C",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.Clear,
+)
+btnC.grid(row=1, column=1, pady=1)
+btnCE = Button(
+    innerFrame,
+    text="CE",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.All_Clear,
+)
+btnCE.grid(row=1, column=2, pady=1)
+btnPM = Button(
+    innerFrame,
+    text="+-",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.mathPM,
+)
+btnPM.grid(row=1, column=3, pady=1)
+
+btnpier = Button(
+    innerFrame,
+    text="√x",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.squared1,
+)
+btnpier.grid(row=2, column=0, pady=1)
+btnpot = Button(
+    innerFrame,
+    text="x^2",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.squared2,
+)
+btnpot.grid(row=2, column=1, pady=1)
+btn1x = Button(
+    innerFrame,
+    text="1/x",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.squared3,
+)
+btn1x.grid(row=2, column=2, pady=1)
+btnpi = Button(
+    innerFrame,
+    text="π",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.pi,
+)
+btnpi.grid(row=2, column=3, pady=1)
+
+btnplus = Button(
+    innerFrame,
+    text="+",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=lambda: added_value.operation("add"),
+)
+btnplus.grid(row=3, column=3, pady=1)
+btnminus = Button(
+    innerFrame,
+    text="-",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=lambda: added_value.operation("sub"),
+)
+btnminus.grid(row=4, column=3, pady=1)
+btnmulti = Button(
+    innerFrame,
+    text="*",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=lambda: added_value.operation("multi"),
+)
+btnmulti.grid(row=5, column=3, pady=1)
+btndiv = Button(
+    innerFrame,
+    text="/",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=lambda: added_value.operation("divide"),
+)
+btndiv.grid(row=6, column=3, pady=1)
+
+btnkropka = Button(
+    innerFrame,
+    text=".",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.Numberentry("."),
+)
+btnkropka.grid(row=6, column=0, pady=1)
+btnzero = Button(
+    innerFrame,
+    text="0",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.Numberentry("0"),
+)
+btnzero.grid(row=6, column=1, pady=1)
+btnrowna = Button(
+    innerFrame,
+    text="=",
+    width=8,
+    height=2,
+    font=("arial", 10, "bold"),
+    bd=7,
+    bg="gainsboro",
+    command=added_value.sum_of_total,
+)
+btnrowna.grid(row=6, column=2, pady=1)
+calc.mainloop()
