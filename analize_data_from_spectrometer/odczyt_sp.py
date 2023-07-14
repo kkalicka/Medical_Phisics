@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# test = 0 lub 11!!!
+# test = 0 lub 11, jest to zmienna związana z miejscem na ktorym znajduje sie pierwsza cyfra danych w wierszu!!!
 test = 11
 min_number = 19
 max_number = 31
