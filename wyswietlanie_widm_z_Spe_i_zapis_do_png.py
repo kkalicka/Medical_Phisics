@@ -8,7 +8,7 @@ file_names = [
 ]
 
 for file_name in file_names:
-    # tabela z wartosciami
+    # tabela z wartościami pomiarów, użyta później do wykonania wykresu
     data = []
     # tabela z obszarami pikow
     rois = []
