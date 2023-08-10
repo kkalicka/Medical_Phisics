@@ -9,3 +9,5 @@
 #### 4. łączenie i odbieranie połączeń pomiędzy telefonami przy zwiększającej się odległosci głowicy miernika od telefonu). 
 #### Programy zautomatyzowały żmudne procesy i umożliwiły w stosunkowo łatwy sposób dopasowanie możliwie najlepszej częstotliwości dla uzyskania pożądanych rezultatów pomimo dużej ilości wyników.
 ---
+## analize_data_from_spectrometer
+#### Zbierane zostały pomiary fluorescencji oraz absorbancji wybranych odczynników w zależności od stężenia. Program zbiera dane z plików w odpowiednim zakresie fali (około 400-750 nm), normalizuje je oraz drukuje na jednym wykresie.
