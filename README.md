@@ -11,3 +11,7 @@
 ---
 ## analize_data_from_spectrometer
 #### Zbierane zostały pomiary fluorescencji oraz absorbancji wybranych odczynników w zależności od stężenia. Program zbiera dane z plików w odpowiednim zakresie fali (około 400-750 nm), normalizuje je oraz drukuje na jednym wykresie.
+---
+## wyswietlanie_widm_z_Spe_i_zapis_do_png
+#### Drukowanie widm pierwiastkowych o rozszerzeniu .Spe oraz ich zapis do pliku .png. Na wykresie zaznaczone są piki, jeżeli w pliku jest zapisana infromacja o ich przedziale, na piku zaznaczona jest wartość szerokości połówkowej oraz maksymalna wartość piku.
+---
