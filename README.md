@@ -15,3 +15,13 @@
 ## wyswietlanie_widm_z_Spe_i_zapis_do_png
 #### Drukowanie widm pierwiastkowych o rozszerzeniu .Spe oraz ich zapis do pliku .png. Na wykresie zaznaczone są piki, jeżeli w pliku jest zapisana infromacja o ich przedziale, na piku zaznaczona jest wartość szerokości połówkowej oraz maksymalna wartość piku.
 ---
+### V_python
+### Zawiera programy, które dzięki bibliotece Vpython, wizualizują wybrane zjawiska fizyczne. Część z ćwiczeń można uruchomić online:
+#### lab_8 (wizualizacja ruchu planet w układzie słonecznym):
+https://www.glowscript.org/#/user/kalicka/folder/lab8/program/universe
+#### lab_10 (symulacja ruchu, układu kilku połączonych ze sobą sprężynami kul):
+https://www.glowscript.org/#/user/kalicka/folder/lab10/program/BallOnStrings2
+#### lab_11 (symulacja ruchu, układu wachadeł, różniącym się odległością końca wachadła od środka. Symulacja obrazuje efekt motyla-mała zmiana warunków początkowych, po pewnym czasie ma znaczący wpływ na układ):
+https://www.glowscript.org/#/user/kalicka/folder/lab11/program/lab1701
+#### lab_12 (obliczanie liczby pi z wybraną dokłądnością na podstawie: https://www.youtube.com/watch?v=HEfHFsfGXjs, video "The most unexpected answer to a counting puzzle" by 3Blue1Brown):
+https://www.glowscript.org/#/user/kalicka/folder/MyPrograms/program/lastlab
