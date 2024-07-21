@@ -1,0 +1,67 @@
+Web VPython 3.2
+
+N = 7
+
+scene = display(width=1000,height=590, range=20)
+
+Ball = []
+Helix = []
+# balls:
+dist = 4
+for i in range(0, N):
+    if i ==0:
+        Ball.append(sphere(pos=vector(dist, 5, 0), radius=0.5, color=color.blue, a=vector(0, 0, 0), v=vector(0, 0, 0)))
+    else:
+        Ball.append(sphere(pos=vector(dist*(i+1), 0, 0), radius=0.5, color=color.blue, a=vector(0, 0, 0), v=vector(0, 0, 0)))
+
+#walls
+w_l = box(pos=vector(0,0,0), size=vector(0.2,4,0.2), color=color.blue)
+w_r = box(pos=vector(4+dist*N,0,0), size=vector(0.2,4,0.2), color=color.blue)
+
+# helix
+Helix.append(helix(pos =w_l.pos, axis=(Ball[0].pos-w_l.pos), radius=0.5, colis=10, thickness=0.05, color=color.green))
+
+for i in range(1, N):
+    Helix.append(helix(pos =Ball[i-1].pos, axis=(Ball[i].pos-Ball[i-1].pos), radius=0.5, colis=10, thickness=0.05, color=color.green))
+    
+Helix.append(helix(pos =Ball[N-1].pos, axis=(w_r.pos-Ball[N-1].pos), radius=0.5, colis=10, thickness=0.05, color=color.green))
+
+dt = 0.001
+t=0
+
+while True:
+    rate(3000)
+    
+    i = 0
+    for i in range(0,N):
+        if i == 0:
+            # calculate a
+            # k=1, m=1 -> a=F=(r_(i-1)+r_(i+1)+2*(r_i))
+            Ball[0].a = vector(w_l.pos + Ball[1].pos - 2*Ball[0].pos)
+            # calculate v
+            Ball[0].v = Ball[0].v + Ball[0].a*dt
+            # change ball position
+            Ball[0].pos = Ball[0].pos + Ball[0].v*dt
+            
+        elif i == N-1:
+            Ball[i].a = vector(Ball[i-1].pos + w_r.pos - 2*Ball[i].pos)
+            Ball[i].v = Ball[i].v + Ball[i].a*dt
+            Ball[i].pos = Ball[i].pos + Ball[i].v*dt
+            
+        elif i>0:
+            Ball[i].a = vector(Ball[i-1].pos + Ball[i+1].pos - 2*Ball[i].pos)
+            Ball[i].v = Ball[i].v + Ball[i].a*dt
+            Ball[i].pos = Ball[i].pos + Ball[i].v*dt
+    
+    
+    Helix[0].pos = w_l.pos
+    Helix[0].axis = Ball[0].pos - w_l.pos
+    
+    for i in range(1, N):
+        Helix[i].pos = Ball[i-1].pos
+        Helix[i].axis = Ball[i].pos - Ball[i-1].pos
+    
+    Helix[N].pos = Ball[N-1].pos
+    Helix[N].axis = w_r.pos - Ball[N-1].pos
+    
+    t += dt
