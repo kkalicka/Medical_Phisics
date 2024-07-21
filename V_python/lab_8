@@ -1,0 +1,39 @@
+Web VPython 3.2
+
+dt = 5000
+
+# masa słońca
+M=2*10**30
+G=6.67*10**(-11)
+
+sun = sphere(pos = vector(0, 0, 0), radius = 10**10, mass = 2*10**30, color = vector(255,255,0))
+mercury = sphere(pos = vector(70*10**9,0,0), velocity = vector(0, 39*10**(3), 0), radius = 10**10, color = vector(128,128,128), make_trail = True, a=vector(0, 0, 0))
+venus = sphere(pos = vector(110*10**9,0,0), velocity = vector(0, 35*10**(3), 0), radius = 10**10, color = vector(255,125,0), make_trail = True, a=vector(0, 0, 0))
+earth = sphere(pos = vector(150*10**9,0,0), velocity = vector(0, 30*10**(3), 0), radius = 10**10, color = vector(0,0,255), make_trail = True, a=vector(0, 0, 0))
+mars = sphere(pos = vector(250*10**9,0,0), velocity = vector(0, 22*10**(3), 0), radius = 10**10,color = vector(255,0,0), make_trail = True, a=vector(0, 0, 0))
+
+while (True):
+    rate(1000)
+    mercury.a = -G * sun.mass * (mercury.pos)
+    mercury.a = mercury.a / ((mag(mercury.pos)) ** 3)
+
+    mercury.velocity = mercury.velocity + mercury.a*dt
+    mercury.pos = mercury.pos + mercury.velocity*dt
+    
+    venus.a = -G * sun.mass * (venus.pos)
+    venus.a = venus.a / ((mag(venus.pos)) ** 3)
+
+    venus.velocity = venus.velocity + venus.a*dt
+    venus.pos = venus.pos + venus.velocity*dt
+    
+    earth.a = -G * sun.mass * (earth.pos)
+    earth.a = earth.a / ((mag(earth.pos)) ** 3)
+
+    earth.velocity = earth.velocity + earth.a*dt
+    earth.pos = earth.pos + earth.velocity*dt
+    
+    mars.a = -G * sun.mass * (mars.pos)
+    mars.a = mars.a / ((mag(mars.pos)) ** 3)
+
+    mars.velocity = mars.velocity + mars.a*dt
+    mars.pos = mars.pos + mars.velocity*dt
