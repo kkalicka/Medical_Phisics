@@ -1,0 +1,103 @@
+Web VPython 3.2
+
+scene=display(widh=550, height=580, range=4)
+
+g = 9.8; l = 1; li = 1.00000001
+
+# układ 1:
+ball_1 = sphere(pos=vector(0,l,0), radius=0.1, color=color.white)
+linka1 = cylinder(pos=vector(0,0,0), axis=vector(0,3,0), radius=0.03, color=color.white)
+ball_2 = sphere(pos=vector(0,2*l,0), radius=0.1, color=color.white)
+linka2 = cylinder(pos=vector(0,l,0), axis=vector(0,2*l,0), radius=0.03, color=color.white)
+
+# układ 2:
+ball_3 = sphere(pos=vector(0,li,0), radius=0.1, color=color.red)
+linka3 = cylinder(pos=vector(0,0,0), axis=vector(0,2*li,0), radius=0.03, color=color.red)
+ball_4 = sphere(pos=vector(0,2*li,0), radius=0.1, color=color.red)
+linka4 = cylinder(pos=vector(0,li,0), axis=vector(0,2*li,0), radius=0.03, color=color.red)
+
+dt=0.0001
+math_pi =  3.141592653589
+
+# układ 1
+r1 = math_pi # pozycja kątowa 1 kulki
+r2 = (math_pi - 0.1) # pozycja kątowa 2 kulki
+a1 = 0; w1 = 0  # przyspieszenie i prędkość kątowa 1 kulki
+a2 = 0; w2 = 0  # przyspieszenie i prędkość kątowa 2 kulki
+# najpierw mamy do czynienia tylko z energią początkową, m=1
+Energy1 = 1*(ball_1.pos.y+l)*g + 1*(ball_2.pos.y+2*l)*g
+
+# układ 2
+r3 = math_pi # pozycja kątowa 3 kulki
+r4 = (math_pi - 0.1) # pozycja kątowa 4 kulki
+a3 = 0; w3 = 0  # przyspieszenie i prędkość kątowa 1 kulki
+a4 = 0; w4 = 0  # przyspieszenie i prędkość kątowa 2 kulki
+# najpierw mamy do czynienia tylko z energią początkową, m=1
+Energy3 = 1*(ball_3.pos.y+li)*g + 1*(ball_4.pos.y+2*li)*g 
+
+
+# tabelki z energiami
+txt_1 = label(pos = vector(-2,3,0), space=50, text=Energy1, height=20, color=color.white, linecolor=color.white)
+txt_3 = label(pos = vector(-2,2.5,0), space=50, text=Energy3, height=20, color=color.white, linecolor=color.red)
+
+
+while(True):
+    rate(10000)
+    
+    # aktualizacja pozycji
+    # układ 1
+    
+    ball_1.pos.x = -sin(r1)
+    ball_1.pos.y = -cos(r1)
+    linka1.axis = ball_1.pos
+    ball_2.pos.x = ball_1.pos.x - sin(r2)
+    ball_2.pos.y = ball_1.pos.y - cos(r2)
+    linka2.axis = ball_2.pos - ball_1.pos
+    linka2.pos = ball_1.pos
+
+    
+    # układ 2
+    ball_3.pos.x = -sin(r3)
+    ball_3.pos.y = -cos(r3)
+    linka3.axis = ball_3.pos
+    ball_4.pos.x = ball_3.pos.x - sin(r4)
+    ball_4.pos.y = ball_3.pos.y - cos(r4)
+    linka4.axis = ball_4.pos - ball_3.pos
+    linka4.pos = ball_3.pos
+    
+    # pierwszy układ
+    a = (1+(sin(r1-r2)*sin(r1-r2))) # wartość pomocnicza
+    
+    # obliczenia
+    a1 = -(g/l)*(2*sin(r1)-sin(r2)*cos(r1-r2))-(0.5*w1*w1*sin(2*r1-2*r2))-(w2*w2*sin(r1-r2))
+    a1 = a1/a
+    a2 = -(g/l)*(2*sin(r2)-2*sin(r1)*cos(r1-r2))+(0.5*w2*w2*sin(2*r1-2*r2))+(2*w1*w1*sin(r1-r2))
+    a2 = a2/a
+    
+    # zmiana wartości prędkości i położenia
+    w1 += a1*dt
+    w2 += a2*dt
+    r1 += w1*dt
+    r2 += w2*dt
+    
+    # 2 układ
+    a_2 = (1+(sin(r3-r4)*(sin(r3-r4)))) # wartość pomocnicza
+    
+    # obliczenia
+    a3 = -(g/li)*(2*sin(r3)-sin(r4)*cos(r3-r4))-(0.5*w3*w3*sin(2*r3-2*r4))-(w4*w4*sin(r3-r4))
+    a3 = a3/a_2
+    a4 = -(g/li)*(2*sin(r4)-2*sin(r3)*cos(r3-r4))+(0.5*w4*w4*sin(2*r3-2*r4))+(2*w3*w3*sin(r3-r4))
+    a4 = a4/a_2
+    
+    # zmiana wartości prędkości i położenia
+    w3 += a3*dt
+    w4 += a4*dt
+    r3 += w3*dt
+    r4 += w4*dt
+    
+    # zmiana tekstu
+    Energy1 = 1*(ball_1.pos.y+l)*g + 1*(ball_2.pos.y+2*l)*g + (1/2)*l*l* (2*w1*w1 + w2*w2 + 2*w1*w2*cos(r1-r2))
+    txt_1.text = Energy1
+    
+    Energy3 = 1*(ball_3.pos.y+li)*g + 1*(ball_4.pos.y+2*li)*g + (1/2)*li*li* (2*w3*w3 + w4*w4 + 2*w3*w4*cos(r3-r4))
+    txt_3.text = Energy3
