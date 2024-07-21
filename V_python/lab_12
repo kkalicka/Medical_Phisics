@@ -1,0 +1,51 @@
+Web VPython 3.2
+
+scene=display(widh=550, height=580, range=4)
+
+side_length = 0.5
+center_cubes_distance = 1
+k=1
+dt = 0.0001
+t = 0
+colisions = 0
+
+# walls
+wall_left = box(pos=vector((center_cubes_distance * 2) + 0.05, 2.1, 0), size=vector(0.1, 5, 10), color=color.white)
+
+wall_down = box(pos=vector(-0.3, -(side_length/2 + 0.1), 0), size=vector(5, 0.2, 10), color=color.white)
+
+# heavier box
+box_1 = box(pos=vector(0, 0, 0), velocity=vector(1, 0, 0), size=vector(side_length, side_length, side_length), color=color.red, m=100**k)
+
+# lighter box
+box_2 = box(pos=vector(center_cubes_distance, 0, 0), velocity=vector(0, 0, 0), size=vector(side_length, side_length, side_length), color=color.red, m=1)
+
+# tabelki z energiami
+txt_label = label(pos = vector(-2,3,0), space=50, text=str(colisions), height=20, color=color.white, linecolor=color.white)
+
+
+while True:
+    rate(1000000)
+    # box position change
+    box_1.pos.x +=box_1.velocity.x*dt
+    box_2.pos.x +=box_2.velocity.x*dt
+    
+    # colision with wall
+    if box_2.pos.x >=(wall_left.pos.x-(side_length/2)):
+        # change box 2 velocity direction
+        box_2.velocity.x = -box_2.velocity.x
+        colisions += 1
+    
+    # colision with boxes
+    if box_1.pos.x >= (box_2.pos.x - side_length):
+        temp = box_1.velocity.x
+        box_1.velocity.x = temp*((box_1.m-box_2.m)/(box_1.m+box_2.m)) + box_2.velocity.x*(box_2.m*2/(box_1.m+box_2.m))
+        box_2.velocity.x = temp*(box_1.m*2/(box_1.m+box_2.m))+ box_2.velocity.x*((box_2.m-box_1.m)/(box_1.m+box_2.m))
+        colisions += 1
+        
+    txt_label.text = str(colisions)
+    
+    if box_1.pos.x < -center_cubes_distance*2:
+        break
+
+txt_label.text = "calculated pi: "+str(colisions/10**(k))
